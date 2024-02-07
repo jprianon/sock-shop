@@ -36,7 +36,7 @@ pipeline {
             }
         }
     }
-    
+}
 //    post {
 //        always {
 //            // Étape facultative pour nettoyer les ressources après le déploiement
