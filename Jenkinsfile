@@ -30,7 +30,7 @@ pipeline {
                     // Assurez-vous que Docker est installé sur le serveur Jenkins
                     // Exécutez la commande docker-compose sur le serveur distant
                     sshagent(['sock-shop-id']) {
-                        sh "ssh ec2-user@13.36.223.205 'cd /opt/sock-shop/ && docker-compose up -d'"
+                        sh "ssh -i /home/ec2_user/data_enginering_machine_jenkins.pem ec2-user@13.36.223.205 'cd /opt/sock-shop/ && docker-compose up -d'"
                     }
                 }
             }
