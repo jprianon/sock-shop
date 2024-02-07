@@ -40,7 +40,7 @@ pipeline {
 //    post {
 //        always {
 //            // Étape facultative pour nettoyer les ressources après le déploiement
-//            // Par exemple, supprimer les images Docker temporaires
+//            // Par exemple, supprimer les images Docker temporaires - 
 //            script {
 //                docker.image('nom-de-votre-image').remove()
 //            }
