@@ -37,7 +37,8 @@ pipeline {
         }
     }
 }
-//    post {
+// TEST
+//    post {  
 //        always {
 //            // Étape facultative pour nettoyer les ressources après le déploiement
 //            // Par exemple, supprimer les images Docker temporaires - 
