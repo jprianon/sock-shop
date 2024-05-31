@@ -1,5 +1,6 @@
 pipeline {
     agent any
+<<<<<<< HEAD
     
     stages {
         stage('Checkout') {
@@ -31,10 +32,32 @@ pipeline {
                     // Exécutez la commande docker-compose sur le serveur distant
                     sshagent(['sock-shop-id']) {
                         sh "ssh -i /home/ec2-user/data_sock_shop.pem ec2-user@10.202.30.29 -o StrictHostKeyChecking=no 'cd /opt/sock-shop/ && sudo docker-compose up -d'"
+=======
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = "eu-west-2"
+    }
+    parameters{
+        choice(name: 'ENVIRONMENT', choices: ['create', 'destroy'], description: 'create and destroy cluster with one click')
+    }
+    stages {
+
+        stage("Deploy sock-shop to EKS") {
+             when {
+                expression { params.ENVIRONMENT == 'create' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/micro-service') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+>>>>>>> ee389f2 (Add new jenkinsfile)
                     }
                 }
             }
         }
+<<<<<<< HEAD
     }
 }
 // TEST
@@ -48,3 +71,91 @@ pipeline {
 //        }
 //    }
 //}
+=======
+
+         stage("Deploy ingress rule to EKS") {
+             when {
+                expression { params.ENVIRONMENT == 'create' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/ingress-rule') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+                    }
+                }
+            }
+        }
+
+         stage("Create nginx-conroller & route53") {
+             when {
+                expression { params.ENVIRONMENT == 'create' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/nginx-controller') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+                    }
+                }
+            }
+        }
+
+       
+
+         stage("destroy prometheus") {
+             when {
+                expression { params.ENVIRONMENT == 'destroy' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/prometheus-helm') {
+                        sh "terraform destroy -auto-approve"
+                    }
+                }
+            }
+        }
+
+
+        stage("Destroy sock-shop in EKS") {
+             when {
+                expression { params.ENVIRONMENT == 'destroy' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/micro-service') {
+                        sh "terraform destroy -auto-approve"
+                    }
+                }
+            }
+        }
+
+        stage("Destroy ingress rule in EKS") {
+             when {
+                expression { params.ENVIRONMENT == 'destroy' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/ingress-rule') {
+                        sh "terraform destroy -auto-approve"
+                    }
+                }
+            }
+        }
+        
+         stage("destroy nginx-conroller") {
+             when {
+                expression { params.ENVIRONMENT == 'destroy' }
+            }
+            steps {
+                script {
+                    dir('kubernetes/nginx-controller') {
+                         sh "terraform destroy -auto-approve"
+                    }
+                }
+            }
+        }
+
+    }
+}
+>>>>>>> ee389f2 (Add new jenkinsfile)
