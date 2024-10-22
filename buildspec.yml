@@ -49,7 +49,7 @@ phases:
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       # Updating kubectl with your EKS Cluster              
-      #- echo "Update Kube Config configuration"      
+      #- echo "Update Kube Config configuratioddn"      
       #- aws eks update-kubeconfig --name $EKS_CLUSTERNAME
       #- echo "Apply changes to kube manifests"            
       #- kubectl apply -f manifests/
