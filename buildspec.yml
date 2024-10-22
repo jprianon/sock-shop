@@ -19,11 +19,13 @@ phases:
       - git status
       - git rev-parse --verify HEAD~1
       - chmod +x ./microservices/scripts/check_changes.sh
+      - ls -lrta 
 
 
   pre_build:
     commands:
       - ./microservices/scripts/check_changes.sh $REPO_SPECIFIC_PATH || exit 1
+      - cd sock-shop/microservice/$REPO_SPECIFIC_PATH
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - echo Installing dependencies...
@@ -38,9 +40,11 @@ phases:
 
   build:
     commands:
+      - ls -lrta 
       - echo 'dckr_pat_KdmVj2VyGObjtG6RE-rvJqinXb0' | docker login -u jprianon  --password-stdin
       - echo Build started on `date`
-      - echo Building the Docker image...      
+      - echo Building the Docker image...
+      - ls -lrta       
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
   post_build:
