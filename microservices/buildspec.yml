@@ -7,20 +7,20 @@ phases:
   install:
     commands:
       - echo "Vérification des changements dans le répertoire :" $REPO_SPECIFIC_PATH
+      #- git clone https://github.com/jprianon/sock-shop-catalogue.git dd.dsqdqsdqsdqsdqsdqdsqdqsdqsdqsd
       # Vérifie les fichiers modifiés dans la branche
-      - changes=$(git diff --name-only HEAD~1 HEAD)
-      - echo $changes
-      # Si les changements incluent des fichiers du répertoire spécifique, déclencher le webhook
-      - if [[ "$changes" == *"$REPO_SPECIFIC_PATH"* ]]; then
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"text":"Modifications détectées dans '"$REPO_SPECIFIC_PATH"'"}' \
-          https://your-webhook-url.com/trigger;
-        else
-          echo "Aucune modification dans le répertoire spécifique $REPO_SPECIFIC_PATH";
-        fi
+      - echo "Démarrage du build..."
+      - git clone https://github.com/jprianon/sock-shop-catalogue.git 
+      - cd microservcies/
+      - git fetch --depth=2
+      - git status
+      - git rev-parse --verify HEAD~1
+      - chmod +x ../scripts/check_changes.sh
+
 
   pre_build:
     commands:
+      - ../scripts/check_changes.sh $REPO_SPECIFIC_PATH || exit 1
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - echo Installing dependencies...
