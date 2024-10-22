@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-load-balancer-controller
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: aws-load-balancer-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-load-balancer-controller
+  template:
+    metadata:
+      labels:
+        app: aws-load-balancer-controller
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: aws-load-balancer-controller
+          image: amazon/aws-alb-ingress-controller:v2.4.5 #public.ecr.aws/eks/aws-alb-ingress-controller:v2.4.7
+          args:
+            - --ingress-class=alb
+            - --cluster-name=Sock-shop-eks  # Remplace par le nom de ton cluster
+            - --aws-region={{ .Values.region }}  # Remplace par ta région AWS
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          #env:
+          #  - name: AWS_REGION
+          #    value: {{ .Values.region }}  # Remplace par ta région AWS
+          #  - name: AWS_ACCESS_KEY_ID
+          #    valueFrom:
+          #      secretKeyRef:
+          #        name: aws-credentials  # Remplace par le nom de ton secret
+          #        key: access-key
+          #  - name: AWS_SECRET_ACCESS_KEY
+          #    valueFrom:
+          #      secretKeyRef:
+          #        name: aws-credentials  # Remplace par le nom de ton secret
+          #        key: secret-key
+      nodeSelector:
+        "kubernetes.io/os": linux
