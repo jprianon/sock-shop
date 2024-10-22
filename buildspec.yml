@@ -23,7 +23,7 @@ phases:
 
   pre_build:
     commands:
-      - ./microservices/scripts/check_changes.sh $REPO_SPECIFIC_PATH || exit 1
+      - #./microservices/scripts/check_changes.sh $REPO_SPECIFIC_PATH || exit 1
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - echo Installing dependencies...
