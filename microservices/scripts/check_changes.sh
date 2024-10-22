@@ -8,7 +8,7 @@ REPO_SPECIFIC_PATH="microservices/catalogue/"
 #    echo "$REPO_SPECIFIC_PATH n'existe pas."
 #    exit 1
 #fi
-cd microservices/catalogue/
+
 # Vérifier les changements
 # Utiliser HEAD~1 seulement si le référentiel a plus d'un committtzzz
 if git rev-parse --verify HEAD~1 ; then
