@@ -8,7 +8,7 @@ phases:
     commands:
       - echo "Vérification des changements dans le répertoire :" $REPO_SPECIFIC_PATH
       #- git clone https://github.com/jprianon/sock-shop-catalogue.git 
-      # Vérifie les fichiers modifiés dans la branche
+      # Vérifie les fichiers modifiés dans la branchee
       - echo "Démarrage du build..."
       - git clone https://github.com/jprianon/sock-shop.git 
       - ls -lrta 
