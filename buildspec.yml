@@ -11,9 +11,8 @@ phases:
       # Vérifie les fichiers modifiés dans la branche
       - echo "Démarrage du build..."
       - git clone https://github.com/jprianon/sock-shop.git 
-      - ls 
-      - cd microservices/
-      - ls
+      - ls -lrta 
+      - ls -lrta microservices/
       - git fetch --depth=2
       - git status
       - git rev-parse --verify HEAD~1
