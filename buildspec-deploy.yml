@@ -31,7 +31,7 @@ phases:
       - helm list -n $ENVIRONMENT
       - echo Upgrading the Helm chart...
       #- helm upgrade sock-shop scharts/helm-values --values charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
-      - helm upgrade $SERVICE $SERVICE/charts/ --values $SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
+      - helm upgrade $SERVICE microservices/$SERVICE/charts/ --values microservices/$SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
   post_build:
     commands:
       - echo "Deployment to EKS COMPLETED on `date`"
