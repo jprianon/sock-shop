@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Définir le chemin spécifique au répertoire
-REPO_SPECIFIC_PATH="catalogue/"
+REPO_SPECIFIC_PATH="microservices/catalogue/"
 
 # Vérifier si le répertoire existe
 #if [ ! -d "$REPO_SPECIFIC_PATH" ]; then
