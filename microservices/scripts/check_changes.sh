@@ -26,7 +26,7 @@ if [[ -z "$changes" ]]; then
     exit 1 # Utilisez un code de sortie 1 pour indiquer une erreur
 fi
 
-# Vérifier si les changements sont dans le répertoire dsds
+# Vérifier si les changements sont dans le répertoire dsdszzz
 if [[ "$changes" == *"$REPO_SPECIFIC_PATH"* ]]; then
     echo "Modifications détectées dans '$REPO_SPECIFIC_PATH'"
     # Appeler le webhook ou d'autres étapes si nécessaire
