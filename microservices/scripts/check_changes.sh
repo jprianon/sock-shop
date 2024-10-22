@@ -10,7 +10,7 @@ REPO_SPECIFIC_PATH="catalogue/"
 #fi
 
 # Vérifier les changements
-# Utiliser HEAD~1 seulement si le référentiel a plus d'un committt
+# Utiliser HEAD~1 seulement si le référentiel a plus d'un committtzzz
 if git rev-parse --verify HEAD~1 ; then
     changes=$(git diff --name-only HEAD~1 HEAD -- "$REPO_SPECIFIC_PATH")
 else
