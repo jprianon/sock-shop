@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sock-shop-ingress
+  #namespace: {{ .Release.Namespace }}
+  annotations:
+    spec.ingressClassName: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing                   # Schéma internet-facing ou internal
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # Ports d'écoute HTTP et HTTPS
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:715841363614:certificate/636f4b75-129c-43f0-ac85-22a162946974 # ARN du certificat ACM pour HTTPS
+    alb.ingress.kubernetes.io/target-type: ip                             # Indique que l'ALB doit cibler des adresses IP
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60 # Option facultative pour configurer le timeout
+
+spec:
+  ingressClassName: alb
+  rules:
+    - host: sock-shop.zennon.link
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
+  tls:
+  - hosts:
+    - sock-shop.zennon.link
+    secretName: sock-shop-tls-secret
