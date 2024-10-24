@@ -8,7 +8,7 @@ phases:
       - chmod +x ./microservices/scripts/setup_k8s_tools.sh
       - ./microservices/scripts/setup_k8s_tools.sh
 
-  pre_deploy:
+  pre_build:
     commands:
       - echo $ENVIRONMENT
       - echo "Install completed on" `date`
@@ -31,7 +31,7 @@ phases:
       - helm list -n $ENVIRONMENT
       - echo Upgrading the Helm chart...
       - helm upgrade $SERVICE microservices/$SERVICE/charts/ --values microservices/$SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
-  post_deploy:
+  post_build:
     commands:
       - echo "Deployment to EKS COMPLETED on `date`"
       - echo "If api-gateway is deployed, try this following URL http://$(kubectl get ingress -n ${ENVIRONMENT} | awk '{print $3}'; [tail -n +2])"
