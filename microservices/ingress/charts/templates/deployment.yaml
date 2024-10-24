@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-aws-alb
-  namespace: {{ .Release.Namespace }}
+  namespace: prod
 spec:
   replicas: 1
   strategy:
@@ -18,7 +18,7 @@ spec:
       labels:
         app: my-aws-alb
     spec:
-      serviceAccountName: aws-load-balancer-controller-2
+      serviceAccountName: aws-load-balancer-controller
       containers:
       - name: my-aws-alb
         image: public.ecr.aws/eks/aws-load-balancer-controller:v2.9.2

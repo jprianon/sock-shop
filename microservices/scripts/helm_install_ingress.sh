@@ -7,7 +7,7 @@
 #helm repo update
 
 # Install the AWS Load Balancer Controller using Helm
-helm upgrade --install aws-load-balancer-controller-2 eks/aws-load-balancer-controller --values=values.yaml \
+helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller --values=values.yaml \
   -n kube-system \
   --set clusterName=SockShop-eks \
   --set serviceAccount.create=true \

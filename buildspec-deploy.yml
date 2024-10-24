@@ -8,7 +8,7 @@ phases:
       - chmod +x ./microservices/scripts/setup_k8s_tools.sh
       - ./microservices/scripts/setup_k8s_tools.sh
 
-  pre_build:
+  pre_deploy:
     commands:
       - echo $ENVIRONMENT
       - echo "Install completed on" `date`
@@ -30,17 +30,16 @@ phases:
       - echo Deployment started on $(date)
       - helm list -n $ENVIRONMENT
       - echo Upgrading the Helm chart...
-      #- helm upgrade sock-shop scharts/helm-values --values charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
       - helm upgrade $SERVICE microservices/$SERVICE/charts/ --values microservices/$SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
-  post_build:
+  post_deploy:
     commands:
       - echo "Deployment to EKS COMPLETED on `date`"
-      #- echo "If api-gateway is deployed, try this following URL: http://$(kubectl get ingress -n ${ENVIRONMENT} | awk '{print $3}'; [tail -n +2])"
-      #-
-      #  response=$(curl -Is https://sock-shop${ENVIRONMENT}.zennon.link)
-      #  http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
-      #  if [ "$http_status" == "200" ]; then
-      #    echo "The request succeeded with HTTP response code 200 (OK)"
-      #  else
-      #    echo "The request failed with HTTP response code $http_status"
-      #  fi
+      - echo "If api-gateway is deployed, try this following URL http://$(kubectl get ingress -n ${ENVIRONMENT} | awk '{print $3}'; [tail -n +2])"
+      -
+        response=$(curl -Is https://sock-shop${ENVIRONMENT}.zennon.link)
+        http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
+        if [ "$http_status" == "200" ]; then
+          echo "The request succeeded with HTTP response code 200 (OK)"
+        else
+          echo "The request failed with HTTP response code $http_status"
+        fi

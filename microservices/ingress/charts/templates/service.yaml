@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: my-service-alb
-  namespace: {{ .Release.Namespace }}
+  namespace: prod
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: "application" # Utiliser un ALB
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"     # Pour HTTPS
@@ -13,17 +13,6 @@ metadata:
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
 spec:
   type: LoadBalancer
-  rules:
-    - host: sock-shop.zennon.link
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: front-end
-                port:
-                  number: 80
   selector:
     app: my-service-alb
   ports:

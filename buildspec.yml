@@ -7,14 +7,9 @@ phases:
   install:
     commands:
       - echo "Vérification des changements dans le répertoire :" $REPO_SPECIFIC_PATH
-      #- git clone https://github.com/jprianon/sock-shop-catalogue.git 
-      # Vérifie les fichiers modifiés dans la branchee
       - echo "Démarrage du build..."
       - git clone https://github.com/jprianon/sock-shop.git 
-      - ls -lrta 
       - cd sock-shop
-      - ls -lrta 
-      - ls -lrta microservices/
       - git fetch --depth=2
       - git status
       - git rev-parse --verify HEAD~1
@@ -40,23 +35,17 @@ phases:
 
   build:
     commands:
-      - ls -lrta 
       - echo 'dckr_pat_KdmVj2VyGObjtG6RE-rvJqinXb0' | docker login -u jprianon  --password-stdin
       - echo Build started on `date`
-      - echo Building the Docker image...
-      - ls -lrta       
+      - echo Building the Docker image...   
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
+
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      # Updating kubectl with your EKS Cluster              
-      #- echo "Update Kube Config configuratioddn"      
-      #- aws eks update-kubeconfig --name $EKS_CLUSTERNAME
-      #- echo "Apply changes to kube manifests"            
-      #- kubectl apply -f manifests/
       - echo "All done !"
 
 artifacts:

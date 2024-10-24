@@ -1,0 +1,43 @@
+
+
+Wed Oct 23 14:37:45 2024
+Command line: TestDisk
+
+TestDisk 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 5.10.16.3-microsoft-standard-WSL2 (#1 SMP Fri Apr 2 22:23:49 UTC 2021) x86_64
+Compiler: GCC 11.2
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.3
+User is not root!
+Hard disk list
+
+
+TestDisk exited normally.
+Using locale 'C.UTF-8'.
+
+
+Wed Oct 23 14:37:45 2024
+Command line: TestDisk /debug
+
+TestDisk 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 5.10.16.3-microsoft-standard-WSL2 (#1 SMP Fri Apr 2 22:23:49 UTC 2021) x86_64
+Compiler: GCC 11.2
+ext2fs lib: 1.46.5, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.3
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop0 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop1 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop2 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop3 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop4 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop5 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop6 - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop7 - 0 B - 0 sectors, sector size=512
+Hard disk list
+Disk /dev/sda - 274 GB / 256 GiB - CHS 33418 255 63, sector size=512 - Msft Virtual Disk, FW:1.0
+Disk /dev/sdb - 274 GB / 256 GiB - CHS 33418 255 63, sector size=512 - Msft Virtual Disk, FW:1.0
+
+Partition table type (auto): None
+SIGINT detected! TestDisk has been killed.
