@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - echo Entered the install phase....
-      #- export ENVIRONMENT=prod
+      #- export ENVIRONMENT=prodd
       - chmod +x ./microservices/scripts/setup_k8s_tools.sh
       - ./microservices/scripts/setup_k8s_tools.sh
 
