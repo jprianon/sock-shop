@@ -31,6 +31,7 @@ phases:
       - helm list -n $ENVIRONMENT
       - echo Upgrading the Helm chart...
       - helm upgrade $SERVICE microservices/$SERVICE/charts/ --values microservices/$SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
+      - kubectl rollout restart deployment/$SERVICE -n $ENVIRONMENT
   post_build:
     commands:
       - echo "Deployment to EKS COMPLETED on `date`"
