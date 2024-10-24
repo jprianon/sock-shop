@@ -34,7 +34,7 @@ phases:
   post_build:
     commands:
       - echo "Deployment to EKS COMPLETED on `date`"
-      -
+      - |
         response=$(curl -Is https://sock-shop${ENVIRONMENT}.zennon.link)
         http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
 
