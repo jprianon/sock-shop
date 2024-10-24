@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: sock-shop-dev.zennon.link
+    - host: sock-shop-prod.zennon.link
       http:
         paths:
           - path: /
