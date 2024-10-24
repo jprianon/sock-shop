@@ -37,8 +37,10 @@ phases:
       -
         response=$(curl -Is https://sock-shop${ENVIRONMENT}.zennon.link)
         http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
+
         if [ "$http_status" == "200" ]; then
           echo "The request succeeded with HTTP response code 200 (OK)"
         else
           echo "The request failed with HTTP response code $http_status"
         fi
+
