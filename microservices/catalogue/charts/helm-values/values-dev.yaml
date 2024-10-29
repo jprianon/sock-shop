@@ -1,6 +1,5 @@
 namespace: "dev"
 
-
 serviceAccount:
   create: true
   name: "nginx-ingress-serviceaccount"
