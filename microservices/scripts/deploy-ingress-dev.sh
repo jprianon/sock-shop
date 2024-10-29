@@ -13,9 +13,9 @@ helm upgrade --install ingress eks/aws-load-balancer-controller --values=../$ser
   --set vpcId=vpc-0708985fb5c18eb4c \
   --set extraArgs.ingress-class=alb
 
-kubectl apply -f ../$service/charts/templates/deployment.yaml
-kubectl apply -f ../$service/charts/templates/service.yaml
-kubectl apply -f ../$service/charts/templates/alb_ingress-dev.yaml
+kubectl apply -f ../$service/charts/templates/deployment-$env.yaml
+kubectl apply -f ../$service/charts/templates/service-$env.yaml
+kubectl apply -f ../$service/charts/templates/alb_ingress-$env.yaml
 
 #for service in "${service[@]}"; do
 #  echo "Déploiement du service $service en dev..."

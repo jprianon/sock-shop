@@ -2,13 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-ingress-prod
-  namespace: {{ .Release.Namespace }}
+  namespace: prod #{{ .Release.Namespace }}
   annotations:
-    #kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:715841363614:certificate/dd3c0236-c879-43a1-919f-fd14189a4d6e
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:715841363614:certificate/2d64bba1-942c-4aae-bd62-bdf9d7ca298d
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     kubernetes.io/ingress.class: alb
 spec:
