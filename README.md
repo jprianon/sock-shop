@@ -41,3 +41,22 @@ Le projet Sock Shop est une application de microservices qui simule une boutique
    ```bash
    git clone https://github.com/jprianon/sock-shop.git
    cd sock-shop
+
+3. Renseigner les access key de votre compte AWS
+   
+   ```bash
+   export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID
+   export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
+
+2. Allez dans le dossier terraform et exécutez ces commandes pour lancer l'environnement.
+
+   ```bash
+   terraform init && terraform plan && terraform apply
+
+3. Une fois l'environnement en place vous pouvez lancer le déploiement via Helm avec le scipt bash à cette effet : 
+   
+   ```bash
+   cd microservices/
+   ./deploy-all-dev.sh
+
+
