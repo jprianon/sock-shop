@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress-dev
+  namespace: dev #{{ .Release.Namespace }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:715841363614:certificate/636f4b75-129c-43f0-ac85-22a162946974   # Pour HTTPS
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    kubernetes.io/ingress.class: alb
+spec:
+  ingressClassName: alb
+  rules:
+    - host: sock-shop-dev.zennon.link
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80

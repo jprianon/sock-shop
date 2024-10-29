@@ -1,0 +1,47 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase....
+      - export ENVIRONMENT=dev
+      - chmod +x ./microservices/scripts/setup_k8s_tools.sh
+      - ./microservices/scripts/setup_k8s_tools.sh
+
+  pre_build:
+    commands:
+      - echo $ENVIRONMENT
+      - echo "Install completed on" `date`
+      - echo "Connecting to EKS cluster:" $CLUSTER_NAME
+      - aws eks update-kubeconfig --region $REGION --name $CLUSTER_NAME
+      - echo ${ENVIRONMENT}
+      - echo "Checking if Kubernetes namespace exists (${ENVIRONMENT})"
+      - |
+        if kubectl get namespaces | grep $ENVIRONMENT; then
+          echo "Namespace ${ENVIRONMENT} exists."
+        else
+          echo "Namespace ${ENVIRONMENT} does not exist. Creating it..."
+          kubectl create namespace $ENVIRONMENT
+        fi
+
+  build:
+    commands:
+      - echo Entered the Deployment phase...
+      - echo Deployment started on $(date)
+      - helm list -n $ENVIRONMENT
+      - echo Upgrading the Helm chart...
+      - helm upgrade $SERVICE microservices/$SERVICE/charts/ --values microservices/$SERVICE/charts/helm-values/values-${ENVIRONMENT}.yaml -n $ENVIRONMENT
+      - kubectl rollout restart deployment/$SERVICE -n $ENVIRONMENT
+  post_build:
+    commands:
+      - echo "Deployment to EKS COMPLETED on `date`"
+      - |
+        response=$(curl -Is https://sock-shop${ENVIRONMENT}.zennon.link)
+        http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
+
+        if [ "$http_status" == "200" ]; then
+          echo "The request succeeded with HTTP response code 200 (OK)"
+        else
+          echo "The request failed with HTTP response code $http_status"
+        fi
+

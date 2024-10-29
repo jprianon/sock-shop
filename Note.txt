@@ -1,0 +1,7 @@
+IAM 
+Tag Subnet : 
+ - privé :  kubernetes.io/role/internal-elb = 1
+ - public : kubernetes.io/role/elb = 1 
+Admin accès : node-group-1-eks-node-group-20241027112352524200000002 
+Route 53
+VPC code build 

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service-alb
+  namespace: dev #{{ .Release.Namespace }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "application" # Utiliser un ALB
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"     # Pour HTTPS
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http" # Protocole backend
+    alb.ingress.kubernetes.io/scheme: internet-facing                   # Schéma internet-facing ou internal
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # Ports d'écoute HTTP et HTTPS
+    alb.ingress.kubernetes.io/target-type: ip                             # Indique que l'ALB doit cibler des adresses IP
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
+spec:
+  type: LoadBalancer
+  selector:
+    app: my-service-alb
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443          # Port d'écoute de l'ALB
+      targetPort: 80  # Port de votre conteneur
+    #- name: https
+    #  protocol: TCP
+    #  port: 443         # Port d'écoute de l'ALB pour HTTPS
+    #  targetPort: 8443

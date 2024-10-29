@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-aws-alb
+  namespace: dev #{{ .Release.Namespace }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: my-aws-alb
+  template:
+    metadata:
+      labels:
+        app: my-aws-alb
+    spec:
+      serviceAccountName: aws-load-balancer-controller
+      containers:
+      - name: my-aws-alb
+        image: public.ecr.aws/eks/aws-load-balancer-controller:v2.9.2
+        args:
+        - --ingress-class=alb
+        - --cluster-name=SockShop-eks
+        - --ingress-class=alb
+        ports:
+        - containerPort: 80
+        - containerPort: 61779  # Port pour la sonde de readiness
+        env:
+        - name: CLUSTER_NAME
+          value: "SockShop-eks"
+        readinessProbe:  # Vérifie que le conteneur est prêt à recevoir du trafic
+          httpGet:
+            path: /readyz
+            port: 61779
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:  # Vérifie que le conteneur fonctionne toujours
+          httpGet:
+            path: /healthz
+            port: 61779
+          initialDelaySeconds: 15
+          periodSeconds: 20
+

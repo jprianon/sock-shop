@@ -1,0 +1,55 @@
+version: 0.2
+env:
+  variables:
+    REPO_SPECIFIC_PATH: "catalogue/"
+
+phases:
+  install:
+    commands:
+      - echo "Vérification des changements dans le répertoire :" $REPO_SPECIFIC_PATH
+      - echo "Démarrage du build..."
+      - git clone https://github.com/jprianon/sock-shop.git 
+      - cd sock-shop
+      - git fetch --depth=2
+      - git status
+      - git rev-parse --verify HEAD~1
+      - chmod +x ./microservices/scripts/check_changes.sh
+      - ls -lrta 
+
+
+  pre_build:
+    commands:
+      - ./microservices/scripts/check_changes.sh $REPO_SPECIFIC_PATH || exit 1
+      - cd microservices/$REPO_SPECIFIC_PATH
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo Installing dependencies...
+      - yum update -y
+      - yum install -y python3-pip
+      - pip3 install awscli
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+      - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      - pip3 install yq
+
+  build:
+    commands:
+      - echo 'dckr_pat_KdmVj2VyGObjtG6RE-rvJqinXb0' | docker login -u jprianon  --password-stdin
+      - echo Build started on `date`
+      - echo Building the Docker image...   
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo "All done !"
+
+artifacts:
+  files:
+    - '**/*'
+  name: build-artifact-sock-shop
+  discard-paths: no
