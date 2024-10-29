@@ -7,7 +7,7 @@ metadata:
     name: catalogue-db
 spec:
   ports:
-    # the port that this service should serve onnnddd
+    # the port that this service
   - port: 3306
     targetPort: 3306
   selector:
