@@ -8,7 +8,8 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:715841363614:certificate/636f4b75-129c-43f0-ac85-22a162946974   # Pour HTTPS
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    #alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=120
     kubernetes.io/ingress.class: alb
 spec:
   ingressClassName: alb
@@ -23,3 +24,26 @@ spec:
                 name: front-end
                 port:
                   number: 80
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: user
+                port:
+                  number: 80
+          - path: /catalogue
+            pathType: Prefix
+            backend:
+              service:
+                name: catalogue
+                port:
+                  number: 80
+          - path: /cart
+            pathType: Prefix
+            backend:
+              service:
+                name: cart
+                port:
+                  number: 80
+
+
